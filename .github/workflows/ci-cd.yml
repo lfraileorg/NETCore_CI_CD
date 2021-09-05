@@ -77,7 +77,7 @@ jobs:
         path: arm
         
   deploy:       
-    if: github.ref == 'refs/heads/main' 
+    # if: github.ref == 'refs/heads/main' 
     needs: build_ci
     runs-on: ubuntu-latest  
     environment: dockerwebapp
@@ -113,7 +113,7 @@ jobs:
         parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
 
   deploydb:  
-    if: github.ref == 'refs/heads/main'        
+    # if: github.ref == 'refs/heads/main'        
     needs: deploy
     runs-on: windows-latest  
     environment: database
