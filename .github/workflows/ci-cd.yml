@@ -17,6 +17,14 @@ env:
     
 jobs:
   build_ci:
+    services:
+      sql-server:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: Password12!
+        ports:
+        - 5433:1433
     runs-on: ubuntu-latest
 
     steps:
