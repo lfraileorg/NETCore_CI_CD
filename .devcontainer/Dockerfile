@@ -2,6 +2,9 @@
 ARG VARIANT=3.1
 FROM mcr.microsoft.com/vscode/devcontainers/dotnet:${VARIANT}
 
+# Mount for docker-in-docker 
+VOLUME [ "/var/lib/docker" ]
+
 # [Option] Install Node.js
 ARG INSTALL_NODE="true"
 ARG NODE_VERSION="lts/*"
@@ -31,5 +34,4 @@ RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --g
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
 
-# Mount for docker-in-docker 
-VOLUME [ "/var/lib/docker" ]
+
