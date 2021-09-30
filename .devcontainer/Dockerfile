@@ -32,7 +32,7 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 # Install SQL Tools: SQLPackage and sqlcmd
 #COPY mssql/installSQLtools.sh installSQLtools.sh
 #RUN bash ./installSQLtools.sh \
-     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+ #    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # Update args in docker-compose.yaml to set the UID/GID of the "vscode" user.
 ARG USER_UID=1000
