@@ -16,7 +16,7 @@ RUN LATEST_COMPOSE_VERSION=$(curl -sSL "https://api.github.com/repos/docker/comp
     && curl -sSL "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
     && chmod +x /usr/local/bin/docker-compose
 
-#VOLUME [ "/var/lib/docker" ]
+VOLUME [ "/var/lib/docker" ]
 
 # [Option] Install Node.js
 ARG INSTALL_NODE="true"
@@ -27,7 +27,7 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 #ARG INSTALL_AZURE_CLI="false"
 #COPY library-scripts/azcli-debian.sh /tmp/library-scripts/
 #RUN if [ "$INSTALL_AZURE_CLI" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh; fi \
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+#    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # Install SQL Tools: SQLPackage and sqlcmd
 #COPY mssql/installSQLtools.sh installSQLtools.sh
