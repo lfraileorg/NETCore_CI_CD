@@ -54,10 +54,10 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureDockerServices(IServiceCollection services)
         {
-            services.AddDataProtection()
-                .PersistKeysToAzureBlobStorage(GetBlobClient())
-                .SetApplicationName("eshopwebmvc")
-                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+            // services.AddDataProtection()
+            //     .PersistKeysToAzureBlobStorage(GetBlobClient())
+            //     .SetApplicationName("eshopwebmvc")
+            //     .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
 
             ConfigureDevelopmentServices(services);
         }
@@ -86,9 +86,9 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            services.AddDataProtection()
-               .PersistKeysToAzureBlobStorage(GetBlobClient())
-               .SetApplicationName("eshopwebmvc");
+            // services.AddDataProtection()
+            //    .PersistKeysToAzureBlobStorage(GetBlobClient())
+            //    .SetApplicationName("eshopwebmvc");
 
             // use real database
             // Requires LocalDB which can be installed with SQL Server Express 2016
