@@ -90,11 +90,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Azure CLI Action
-      uses: Azure/cli@1.0.4
-      with:        
-        inlineScript: az group create --location westeurope --resource-group $RESOURCE_GROUP
 
     - name: Deploy Azure Resource Manager (ARM) Template
       continue-on-error: true
