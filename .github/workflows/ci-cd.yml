@@ -76,11 +76,11 @@ jobs:
         name: arm_template
         path: arm
         
-  deploy:       
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codespaces'
+  deploydev:       
+    #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codespaces'
     needs: build_ci
     runs-on: ubuntu-latest  
-    environment: dockerwebapp
+    environment: dockerwebappdev
     env:
       RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
@@ -112,23 +112,11 @@ jobs:
         deploymentName: deploy-docker-${{ github.sha  }}
         parameters: catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
 
-  deploydb:  
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codespaces'      
-    needs: deploy
-    runs-on: windows-latest  
-    environment: database
-    
-    steps:      
     - name: Download scripts
       uses: actions/download-artifact@v2
       with:
         name: sql_scripts
-        path: sql_scripts
-    
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}    
+        path: sql_scripts    
         
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
