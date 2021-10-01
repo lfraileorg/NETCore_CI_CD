@@ -2,6 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "rg_name":{
+      "defaultValue": "NetCore_GIthubCI_CD_RG",
+      "type": "string"
+    },
     "sites_netcoregithub_name": {
       "defaultValue": "netcoregithub",
       "type": "String"
@@ -46,7 +50,7 @@
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2018-05-01",
       "location": "westeurope",
-      "name": "NetCore_GIthubCI_CD_RG"
+      "name": "[parameters('rg_name')]"
     },
     {
       "apiVersion": "2018-05-01-preview",
