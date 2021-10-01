@@ -43,6 +43,12 @@
   "variables": {},
   "resources": [
     {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2018-05-01",
+      "location": "westeurope",
+      "name": "NetCore_GIthubCI_CD_RG"
+    },
+    {
       "apiVersion": "2018-05-01-preview",
       "name": "[parameters('sites_netcoregithub_name')]",
       "type": "microsoft.insights/components",
