@@ -9,6 +9,7 @@ on:
     paths: 
       - .github/workflows/ci-cd.yml
       - src/**
+      - arm/**
 
 env:
   build_config: Release      
