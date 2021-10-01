@@ -1,4 +1,6 @@
 #!/bin/bash
+export ASPNETCORE_ENVIRONMENT=Codespaces
+
 sudo dotnet dev-certs https
 dotnet tool restore 
 
