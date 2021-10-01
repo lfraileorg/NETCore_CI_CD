@@ -44,7 +44,7 @@ jobs:
         context: .
         pull: true
         push: true
-        dockerfile: src/Web/Dockerfile
+        file: src/Web/Dockerfile
         tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
     
     - name: Setup .NET Core
