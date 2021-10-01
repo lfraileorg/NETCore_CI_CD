@@ -43,18 +43,29 @@ namespace Microsoft.eShopWeb.Web
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureCodespacesServices(IServiceCollection services)
+        {
+            ConfigureSqlDatabase(services);
+
+            ConfigureServices(services);
+        }
+
+        private void ConfigureSqlDatabase(IServiceCollection services)
+        {
+            services.AddDbContext<CatalogContext>(c =>
+                            c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
+
+            // Add Identity DbContext
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+        }
+
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             // use in-memory database
             //ConfigureInMemoryDatabases(services);
 
-                        
-            services.AddDbContext<CatalogContext>(c =>
-                c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
-
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            ConfigureSqlDatabase(services);
 
             ConfigureServices(services);
         }
@@ -96,13 +107,8 @@ namespace Microsoft.eShopWeb.Web
             services.AddDataProtection()
                .PersistKeysToAzureBlobStorage(GetBlobClient())
                .SetApplicationName("eshopwebmvc");
-            
-            services.AddDbContext<CatalogContext>(c =>
-                c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
 
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            ConfigureSqlDatabase(services);
 
             ConfigureServices(services);
         }
@@ -165,7 +171,7 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
-            
+
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
             services.AddScoped<BaseUrlConfiguration>(sp => baseUrlConfig);
