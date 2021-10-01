@@ -48,16 +48,23 @@ namespace Microsoft.eShopWeb.Web
             // use in-memory database
             //ConfigureInMemoryDatabases(services);
 
-            // use real database
-            ConfigureProductionServices(services);
+                        
+            services.AddDbContext<CatalogContext>(c =>
+                c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
+
+            // Add Identity DbContext
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+
+            ConfigureServices(services);
         }
 
         public void ConfigureDockerServices(IServiceCollection services)
         {
-            // services.AddDataProtection()
-            //     .PersistKeysToAzureBlobStorage(GetBlobClient())
-            //     .SetApplicationName("eshopwebmvc")
-            //     .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
+            services.AddDataProtection()
+                .PersistKeysToAzureBlobStorage(GetBlobClient())
+                .SetApplicationName("eshopwebmvc")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"./"));
 
             ConfigureDevelopmentServices(services);
         }
@@ -86,13 +93,10 @@ namespace Microsoft.eShopWeb.Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            // services.AddDataProtection()
-            //    .PersistKeysToAzureBlobStorage(GetBlobClient())
-            //    .SetApplicationName("eshopwebmvc");
-
-            // use real database
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
+            services.AddDataProtection()
+               .PersistKeysToAzureBlobStorage(GetBlobClient())
+               .SetApplicationName("eshopwebmvc");
+            
             services.AddDbContext<CatalogContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection")));
 
