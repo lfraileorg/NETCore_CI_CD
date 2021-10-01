@@ -63,6 +63,7 @@
 #     done
 # fi
 
+sudo dotnet dev-certs https
 dotnet tool restore 
 
 dotnet ef database update -c catalogcontext -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj
