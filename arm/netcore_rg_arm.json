@@ -1,11 +1,7 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-    "rg_name":{
-      "defaultValue": "NetCore_GIthubCI_CD_RG",
-      "type": "string"
-    },
+  "parameters": {   
     "sites_netcoregithub_name": {
       "defaultValue": "netcoregithub",
       "type": "String"
