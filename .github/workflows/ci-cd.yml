@@ -74,7 +74,7 @@ jobs:
         path: arm
         
   deploydev:       
-    #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codespaces'
+    if: github.ref != 'refs/heads/main'
     needs: build_ci
     runs-on: windows-latest  
     environment: dockerwebappdev
@@ -126,7 +126,7 @@ jobs:
         sql-file: sql_scripts/identity.sql
 
   deploypro:      
-    #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/codespaces'
+    if: github.ref == 'refs/heads/main'
     needs: build_ci
     runs-on: windows-latest  
     environment: dockerwebapppro
