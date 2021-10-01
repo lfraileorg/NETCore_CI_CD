@@ -96,7 +96,7 @@ jobs:
       continue-on-error: true
       uses: Azure/arm-deploy@v1
       with:        
-        scope: subscription
+        scope: resourcegroup
         subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'        
         resourceGroupName: ${{ env.RESOURCE_GROUP }}
         template: arm_template/netcore_rg_arm.json     
@@ -148,7 +148,7 @@ jobs:
       continue-on-error: true
       uses: Azure/arm-deploy@v1
       with:        
-        scope: subscription
+        scope: resourcegroup
         subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'        
         resourceGroupName: ${{ env.RESOURCE_GROUP }}
         template: arm_template/netcore_rg_arm.json     
