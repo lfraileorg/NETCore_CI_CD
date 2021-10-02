@@ -1,4 +1,4 @@
-name: CI/CD .Net Core (ACI)
+name: (API) CI/CD .Net Core
 
 on:
   workflow_dispatch:
@@ -49,13 +49,13 @@ jobs:
         file: src/PublicApi/Dockerfile
         tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}    
 
-  deploydev:
-    #if: github.ref != 'refs/heads/main'
+  deploy-api-dev:
+    if: github.ref != 'refs/heads/main'
     needs: 
       - build-ci-api
 
     runs-on: ubuntu-latest
-    environment: dockerwebappdev
+    environment: aciapidev
     env:
       RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
@@ -74,6 +74,37 @@ jobs:
               --name eshopwebdemoapidev \
               --image ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}  \
               --dns-name-label aci-eShopWebDemoApi \
+              --ports 80 \
+              --registry-login-server ${{ env.registry_name }} \
+              --registry-username ${{ secrets.ACR_USER_NAME }} \
+              --registry-password ${{ secrets.ACR_PASSWORD }} \
+              --environment-variable ConnectionStrings__CatalogConnection="${{ secrets.CATALOG_DB_CONNSTRING }}" ConnectionStrings__IdentityConnection="${{ secrets.IDENTITY_DB_CONNSTRING }}"
+
+  deploy-api-pro:
+    if: github.ref == 'refs/heads/main'
+    needs: 
+      - build-ci-api
+
+    runs-on: ubuntu-latest
+    environment: aciapipro
+    env:
+      RESOURCE_GROUP: NetCore_GitHubCI_CD_PRO_RG
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az account show
+            az container create \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --name eshopwebdemoapipro \
+              --image ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}  \
+              --dns-name-label aci-eShopWebDemoApiPro \
               --ports 80 \
               --registry-login-server ${{ env.registry_name }} \
               --registry-username ${{ secrets.ACR_USER_NAME }} \
