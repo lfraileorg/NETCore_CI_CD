@@ -7,7 +7,7 @@ namespace VulenrableApp
         static void Main(string[] args)
         {
             string password = "P~4ssw0rd";
-            Console.WriteLine("Hello World!");
+            Console.WriteLine($"Hello World! with password {password}");
         }
     }
 }
