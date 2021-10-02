@@ -28,6 +28,11 @@ namespace Microsoft.eShopWeb.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Check(int orderId, string status){
+            return Ok();
+        }
+
         [HttpGet("{orderId}")]
         public async Task<IActionResult> Detail(int orderId)
         {
