@@ -23,10 +23,10 @@ ingress:
     nginx.ingress.kubernetes.io/use-regex: "true"
   path: /(.*)
   hosts:
-  - githubaks.lfraile.net
+  - eshopweb.lfraile.net
   tls:
     - hosts:
-      - githubaks.lfraile.net
+      - eshopweb.lfraile.net
       secretName: tls-secret
 secrets:
   ConnectionStrings:

@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - githubaks.lfraile.net
+    - eshopweb.lfraile.net
     secretName: tls-secret
   rules:
-  - host: githubaks.lfraile.net
+  - host: eshopweb.lfraile.net
     http:
       paths:
       - path: /(.*)
