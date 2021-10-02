@@ -15,7 +15,7 @@ env:
   repository_name: eshop-web-api
 
 jobs:
-  build-ci:
+  build-ci-api:
     runs-on: ubuntu-latest
 
     steps:
@@ -52,7 +52,7 @@ jobs:
   deploydev:
     #if: github.ref != 'refs/heads/main'
     needs: 
-      - build-ci
+      - build-ci-api
 
     runs-on: ubuntu-latest
     environment: dockerwebappdev
