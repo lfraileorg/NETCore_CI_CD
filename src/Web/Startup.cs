@@ -151,6 +151,10 @@ namespace Microsoft.eShopWeb.Web
                 // IOutboundParameterTransformer implementation
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
+
+            // Add Telemetry
+            services.AddApplicationInsightsTelemetry();
+
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
