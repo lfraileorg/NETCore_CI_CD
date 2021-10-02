@@ -1,4 +1,4 @@
-name: CI/CD .Net Core (AKS)
+name: (AKS) CI/CD .Net Core
 
 on:
   workflow_dispatch:  
