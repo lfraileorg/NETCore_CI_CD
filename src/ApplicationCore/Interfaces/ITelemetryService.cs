@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.eShopWeb.ApplicationCore.Entities;
+using System.Collections.Generic;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 {
@@ -21,11 +22,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
             _properties.Add("type", eventType.TypeName);
         }
 
-        public static TelemetryEvent CreateAddBasketEvent(int product, decimal price)
+        public static TelemetryEvent CreateOrderEvent(Entities.OrderAggregate.OrderItem orderItem)
         {
-            var myEvent = new TelemetryEvent(TelemetryEventType.AddBasketEvent);
-            myEvent.AddProperty(nameof(product), product.ToString());
-            myEvent.AddProperty(nameof(price), price.ToString());
+            var myEvent = new TelemetryEvent(TelemetryEventType.AddOrderEvent);
+            myEvent.AddProperty("productId", orderItem.ItemOrdered.CatalogItemId.ToString());
+            myEvent.AddProperty("product", orderItem.ItemOrdered.ProductName);
+            myEvent.AddProperty("price", $"{orderItem.UnitPrice * orderItem.Units}");
 
             return myEvent;
         }
@@ -38,7 +40,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 
     public class TelemetryEventType
     {
-        public static TelemetryEventType AddBasketEvent = new TelemetryEventType(nameof(AddBasketEvent));
+        public static TelemetryEventType AddOrderEvent = new TelemetryEventType(nameof(AddOrderEvent));
 
         public string TypeName { get; private set; }
 
