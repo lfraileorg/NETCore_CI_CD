@@ -11,16 +11,13 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
     {
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IAppLogger<BasketService> _logger;
-        private readonly ITelemetryService _telemetryService;
 
 
         public BasketService(IAsyncRepository<Basket> basketRepository,
-            IAppLogger<BasketService> logger,
-            ITelemetryService telemetryService)
+            IAppLogger<BasketService> logger)
         {
             _basketRepository = basketRepository;
             _logger = logger;
-            _telemetryService = telemetryService;
         }
 
         public async Task AddItemToBasket(int basketId, int catalogItemId, decimal price, int quantity = 1)
