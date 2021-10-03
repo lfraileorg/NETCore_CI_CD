@@ -1,4 +1,4 @@
-name: (WebApp Docker) CI/CD .Net Core
+name: (WebApp Docker) CI/CD .Net Core - test dev
 
 on:
   workflow_dispatch:
