@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     paths: 
       - .github/workflows/ci-cd.yml
-      - src/PublicApi/**
+      - src/**
       - eShopOnWeb.sln
 
   # push:
