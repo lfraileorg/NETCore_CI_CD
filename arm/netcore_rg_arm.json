@@ -38,6 +38,9 @@
     },
     "identityConnstring": {
       "type": "securestring"
+    },
+    "applicationInsightsInstrumentationKey": {
+      "type": "securestring"
     }
   },
   "variables": {},
@@ -202,8 +205,11 @@
             {
               "name": "DataProtection__StorageConnString",
               "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('sites_netcoregithub_name'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('sites_netcoregithub_name')), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
+            },
+            {
+              "name": "ApplicationInsights__InstrumentationKey",
+              "value": "[parameters('applicationInsightsInstrumentationKey')]"
             }
-
           ],
           "linuxFxVersion": "[concat('DOCKER|',parameters('dockerImage'))]"
 
