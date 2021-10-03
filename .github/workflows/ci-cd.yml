@@ -1,4 +1,4 @@
-name: (WebApp Docker) CI/CD .Net Core - test dev
+name: (WebApp Docker) CI/CD .Net Core
 
 on:
   workflow_dispatch:
@@ -20,6 +20,7 @@ env:
   build_config: Release      
   registry_name: lfraileacr.azurecr.io
   repository_name: eshop-web
+  testdev: dev
     
 jobs:
   build_ci:
