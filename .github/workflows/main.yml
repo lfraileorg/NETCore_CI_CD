@@ -20,6 +20,7 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true 
+        subscription-id: "26da47a8-c28d-4564-ae8e-8ba88e995a0a"
         
     - name: Run Azure PowerShell script
       uses: azure/powershell@v1
