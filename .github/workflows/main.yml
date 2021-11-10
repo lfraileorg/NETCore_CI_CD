@@ -26,6 +26,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          Get-AzVM -ResourceGroupName "Test11ProRG"
+          Login-AzureRmAccount
+          Get-AzureRmResource
         azPSVersion: "latest"
 
