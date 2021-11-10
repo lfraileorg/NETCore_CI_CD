@@ -20,11 +20,11 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true 
-
+        
     - name: Run Azure PowerShell script
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          Get-AzureRmResource 
+          Get-AzVM -ResourceGroupName "Test11ProRG"
         azPSVersion: "latest"
 
