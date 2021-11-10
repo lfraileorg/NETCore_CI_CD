@@ -15,16 +15,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Login via Az module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-          enable-AzPSSession: true 
-          #subscription-id: ${{secrets.AZ_SUB}}
-      - name: Run Azure PowerShell script
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            Get-AzureRmResource
-          azPSVersion: "latest"
-      
+    - name: Login via Az module
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true 
+
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          Get-AzureRmResource 
+        azPSVersion: "latest"
+
