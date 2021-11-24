@@ -8,7 +8,6 @@ on:
     #   - .github/workflows/ci-cd.yml
     #   - src/**
     #   - eShopOnWeb.sln
-
   push:
     branches: [ main ]
     # paths: 
