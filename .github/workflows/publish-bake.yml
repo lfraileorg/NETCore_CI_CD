@@ -1,11 +1,11 @@
 name: Publish bake
 on:
   workflow_dispatch:  
-  push:
-    branches: 
-      - master
-    paths:     
-      - .github/workflows/publish-bake.yml
+  # push:
+  #   branches: 
+  #     - master
+  #   paths:     
+  #     - .github/workflows/publish-bake.yml
 
 env:
   build_config: Release      
