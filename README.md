@@ -1,6 +1,8 @@
 
 # Demo for Inmersion workshop
 
+New tags demo
+
 ## Introduction
 
 Here we are supposed to talk about the different things on the project :)
