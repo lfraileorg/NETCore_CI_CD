@@ -2,6 +2,7 @@ name: (WebApp Docker) CI/CD .Net Core
 
 on:
   workflow_dispatch:
+ 
   pull_request:
     branches: [ main ]
     # paths: 
@@ -9,6 +10,7 @@ on:
     #   - src/**
     #   - eShopOnWeb.sln
   push:
+    tags: [ release-* ]
     branches: [ main ]
     # paths: 
     #   - .github/workflows/ci-cd.yml
