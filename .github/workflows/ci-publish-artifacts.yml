@@ -1,0 +1,80 @@
+name: (WebApp Docker) CI (Publish artifacts)
+
+on:
+  workflow_dispatch:
+  # ta
+  # pull_request:
+  #   branches: [ main ]
+  #   # paths: 
+  #   #   - .github/workflows/ci-cd.yml
+  #   #   - src/**
+  #   #   - eShopOnWeb.sln
+  push:
+    branches: [ main ]
+    # paths: 
+    #   - .github/workflows/ci-cd.yml
+    #   - src/PublicApi/**
+    #   - eShopOnWeb.sln
+
+env:
+  build_config: Release      
+  registry_name: lfraileacr.azurecr.io
+  repository_name: eshop-web
+    
+jobs:
+  build_publish_ci:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+       
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+        version: latest
+
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.registry_name }}
+        username: ${{ secrets.ACR_USER_NAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+   
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        pull: true
+        push: true
+        file: src/Web/Dockerfile
+        tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.402
+    
+    - name: Install dotnet tools
+      run: dotnet tool restore
+    
+    - name: Catalog SQL Script
+      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    
+    - name: Identity SQL Script
+      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: ./scripts
+
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
