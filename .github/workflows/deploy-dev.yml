@@ -34,13 +34,13 @@ jobs:
           
           console.log(`Total count ${result.data.total_count}`);
           console.log(JSON.stringify(result));
-            /* const downloadUrl = result.data.artifacts[0].archive_download_url;
+          /* const downloadUrl = result.data.artifacts[0].archive_download_url;
           const fileContents = await github.request(downloadUrl);
           console.log(fileContents.data);
           
           await fs.writeFile('drop.zip', Buffer.from(fileContents.data), function (err, data) {
               console.log(`Error ${err}`);
-            }); */
+          }); */
         debug: true
         
 
