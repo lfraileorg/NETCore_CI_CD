@@ -33,8 +33,8 @@ jobs:
       with:
         version: latest
 
-    - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    # - name: Test with dotnet
+    #   run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     
     - name: Login to DockerHub
       uses: docker/login-action@v1
