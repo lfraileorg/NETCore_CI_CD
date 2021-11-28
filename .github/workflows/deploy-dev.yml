@@ -34,13 +34,18 @@ jobs:
           
           console.log(`Total count ${result.data.total_count}`);
           console.log(JSON.stringify(result));
-          /* const downloadUrl = result.data.artifacts[0].archive_download_url;
-          const fileContents = await github.request(downloadUrl);
-          console.log(fileContents.data);
           
-          await fs.writeFile('drop.zip', Buffer.from(fileContents.data), function (err, data) {
-              console.log(`Error ${err}`);
-          }); */
+          const downloadUrl = result.data.artifacts[0].archive_download_url;
+          const fileName = result.data.artifacts[0].name;
+          const fileContents = await github.request(downloadUrl);
+          await fs.writeFile(`${fileName}.zip`, Buffer.from(fileContents.data), function (err, data) {});
+          
+          downloadUrl = result.data.artifacts[1].archive_download_url;
+          fileName = result.data.artifacts[1].name;
+          fileContents = await github.request(downloadUrl);
+          await fs.writeFile(`${fileName}.zip`, Buffer.from(fileContents.data), function (err, data) {});
+
+
         debug: true
         
 
