@@ -27,12 +27,14 @@ jobs:
       with:
         script: |
           const fs = require('fs');
-          console.log('${{ github.event.workflow_run.artifacts_url }}')     
+         // console.log('${{ github.event.workflow_run.artifacts_url }}')     
+          
           const artifactsUrl = context.payload.workflow_run.artifacts_url
           const result = await github.request(artifactsUrl)
+          
           console.log(`Total count ${result.data.total_count}`);
-          console.log(result);
-          /* const downloadUrl = result.data.artifacts[0].archive_download_url;
+          console.log(JSON.stringify(result));
+            /* const downloadUrl = result.data.artifacts[0].archive_download_url;
           const fileContents = await github.request(downloadUrl);
           console.log(fileContents.data);
           
