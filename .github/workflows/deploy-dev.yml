@@ -9,6 +9,7 @@ on:
 
 jobs:
   deployDev:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment: 
       name: chained-deploy-dev    
       url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
