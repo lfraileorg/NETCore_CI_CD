@@ -48,7 +48,13 @@ jobs:
 
         debug: true
         
+    - name: unzip
+      script: |
+        7z e arm_template.zip -oarm_template
+        7z e sql_scripts.zip -osql_scripts
 
+        ls arm_template
+        
     # - name: Download arm
     #   uses: actions/download-artifact@v2
     #   with:
