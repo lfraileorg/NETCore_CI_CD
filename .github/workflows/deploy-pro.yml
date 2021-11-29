@@ -6,9 +6,8 @@ on:
     branches: main
     types:
       - completed
-
- deploypro:      
-    
+jobs:
+ deploypro:    
     runs-on: windows-latest  
     environment: 
       name: chained-deploy-dev    
