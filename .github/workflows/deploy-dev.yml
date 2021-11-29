@@ -49,7 +49,7 @@ jobs:
         debug: true
         
     - name: unzip
-      script: |
+      run: |
         7z e arm_template.zip -oarm_template
         7z e sql_scripts.zip -osql_scripts
 
