@@ -73,7 +73,7 @@ jobs:
         template: arm_template/netcore_rg_arm.json     
         region: westeurope  
         deploymentMode: Incremental
-        deploymentName: deploy-docker-${{ github.event.workflow_run.id }}
+        deploymentName: deploy-docker-${{ github.event.workflow_run.head_commit.id }}
         parameters: applicationInsightsInstrumentationKey="${{ secrets.AI_INSTRUMENTATION_KEY }}" catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.event.workflow_run.head_commit.id }}
         
     - name: Azure SQL Deploy
@@ -89,3 +89,15 @@ jobs:
         server-name: ${{ secrets.SQL_NAME }}.database.windows.net
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
+
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
