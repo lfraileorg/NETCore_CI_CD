@@ -11,7 +11,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest  
     environment: 
-      name: chained-deploy-dev    
+      name: chained-deploy-pro    
       url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
     env:
       RESOURCE_GROUP: NetCore_GitHubCI_CD_PRO_RG       
