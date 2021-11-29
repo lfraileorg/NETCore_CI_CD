@@ -89,3 +89,15 @@ jobs:
         server-name: ${{ secrets.SQL_NAME }}.database.windows.net
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
+
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
