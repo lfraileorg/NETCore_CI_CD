@@ -54,6 +54,8 @@ jobs:
         7z e arm_template.zip -oarm_template
         7z e sql_scripts.zip -osql_scripts
 
+        echo "docker_image_version=${{ github.event.workflow_run.id }}" >> $GITHUB_ENV
+
         ls arm_template
         
     - name: 'Login via Azure CLI'
@@ -71,8 +73,8 @@ jobs:
         template: arm_template/netcore_rg_arm.json     
         region: westeurope  
         deploymentMode: Incremental
-        deploymentName: deploy-docker-${{ github.sha  }}
-        parameters: applicationInsightsInstrumentationKey="${{ secrets.AI_INSTRUMENTATION_KEY }}" catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
+        deploymentName: deploy-docker-${{ github.event.workflow_run.id }}
+        parameters: applicationInsightsInstrumentationKey="${{ secrets.AI_INSTRUMENTATION_KEY }}" catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.event.workflow_run.id }}
         
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
