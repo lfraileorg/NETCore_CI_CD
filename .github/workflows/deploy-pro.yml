@@ -14,7 +14,7 @@ jobs:
       name: chained-deploy-dev    
       url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
     env:
-      RESOURCE_GROUP: NetCore_GIthubCI_CD_RG      
+      RESOURCE_GROUP: NetCore_GitHubCI_CD_PRO_RG       
       build_config: Release      
       registry_name: lfraileacr.azurecr.io
       repository_name: eshop-web
