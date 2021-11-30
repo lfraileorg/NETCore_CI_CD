@@ -19,6 +19,8 @@ jobs:
       registry_name: lfraileacr.azurecr.io
       repository_name: eshop-web
     steps:
+    - uses: hmarr/debug-action@v2
+    
     - name: Get Artifacts
       uses: actions/github-script@v5.0.0
       with:
