@@ -8,7 +8,7 @@ on:
       - completed
 jobs:
   deploypro:      
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' &&  github.event.workflow_run.run_attempt == 1}}
     runs-on: windows-latest  
     environment: 
       name: chained-deploy-pro    
