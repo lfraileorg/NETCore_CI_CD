@@ -2,7 +2,8 @@ name: (NO DOCKER)CI/CD .Net Core
 
 on: 
   workflow_dispatch:
-  push: [ restore_simple_webapp_version ] 
+  push:
+    branches: [ restore_simple_webapp_version ] 
 
 jobs:
   build:
