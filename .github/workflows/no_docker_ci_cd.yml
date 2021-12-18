@@ -44,9 +44,14 @@ jobs:
       with:
         name: arm_template
         path: arm
-        
+    - name: Upload Loadtests
+      uses: actions/upload-artifact@v2
+      with:
+        name: load_tests
+        path: load_tests
   deploy_nodocker:
     needs: build_nodocker
+    environment: load_tests
     runs-on: windows-latest
     steps:
     - name: Download scripts
@@ -107,4 +112,19 @@ jobs:
         server-name: netcoregithub.database.windows.net
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
-
+    
+    - name: Download load_tests
+      uses: actions/download-artifact@v2
+      with:
+        name: load_tests
+        path: load_tests
+        
+    - name: Azure Load Testing
+      uses: Azure/load-testing@v1
+      with:
+        # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+        loadtestConfigFile: load_tests/eshop.loadtests.yml
+        # Enter or Select the name of an existing Azure Load Testing resource
+        loadtestResource: lfloadtestsdemo
+        # Enter or Select the Azure Resource Group that contains the Load test resource specified above
+        resourceGroup: LoadTestingRG
