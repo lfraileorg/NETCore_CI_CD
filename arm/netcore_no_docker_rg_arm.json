@@ -134,7 +134,33 @@
           "minCapacity": 0.5
         }
       },
-  
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2018-02-01",
+        "name": "[parameters('sites_netcoregithub_name')]",
+        "location": "westeurope",
+        "tags": {
+          "displayName": "[parameters('sites_netcoregithub_name')]"
+        },
+        "sku": {
+          "name": "Standard_LRS"
+        },
+        "kind": "StorageV2",
+        "properties": {},
+        "resources": [
+          {
+            "type": "blobServices/containers",
+            "apiVersion": "2018-03-01-preview",
+            "name": "default/dpapi",
+            "dependsOn": [
+              "[parameters('sites_netcoregithub_name')]"
+            ],
+            "properties": {
+              "publicAccess": "None"
+            }
+          }
+        ]
+      },
       {
         "type": "Microsoft.Web/sites",
         "apiVersion": "2018-11-01",
@@ -204,6 +230,10 @@
               {
                 "name": "SnapshotDebugger_EXTENSION_VERSION",
                 "value": "disabled"
+              },
+              {
+                "name": "DataProtection__StorageConnString",
+                "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('sites_netcoregithub_name'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('sites_netcoregithub_name')), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
               },
               {
                 "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
