@@ -46,7 +46,7 @@ jobs:
         path: arm
         
   deploy_nodocker:
-    needs: build
+    needs: build_nodocker
     runs-on: windows-latest
     steps:
     - name: Download scripts
