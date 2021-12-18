@@ -6,7 +6,7 @@ on:
     branches: [ restore_simple_webapp_version ] 
 
 jobs:
-  build:
+  build_nodocker:
     runs-on: ubuntu-latest
     env:
       build_config: Release
@@ -45,8 +45,7 @@ jobs:
         name: arm_template
         path: arm
         
-  deploy:
-    if: github.head_ref == 'refs/head/master'
+  deploy_nodocker:
     needs: build
     runs-on: windows-latest
     steps:
