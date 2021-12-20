@@ -1,5 +1,5 @@
 version: v0.1
 testName: eShopGitHub
-testPlan: eshop_loadtests.jmx,external_data.csv
+testPlan: eshop_loadtests.jmx
 description: 'eShop Load Tests with Github'
 engineInstances: 2
