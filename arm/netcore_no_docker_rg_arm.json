@@ -60,11 +60,11 @@
         "name": "[parameters('serverfarms_netcoregithubplan_name')]",
         "location": "West Europe",
         "sku": {
-          "name": "D1",
-          "tier": "Shared",
-          "size": "D1",
-          "family": "D",
-          "capacity": 0
+          "name": "P1v2",
+          "tier": "PremiumV2",
+          "size": "P1v2",
+          "family": "Pv2",
+          "capacity": 1
         },
         "kind": "app",
         "properties": {
