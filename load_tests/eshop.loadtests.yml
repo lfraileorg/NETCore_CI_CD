@@ -3,3 +3,5 @@ testName: eShopGitHub
 testPlan: eshop_loadtests.jmx
 description: 'eShop Load Tests with Github'
 engineInstances: 2
+configurationFiles:
+  - external_data.csv
