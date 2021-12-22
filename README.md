@@ -1,7 +1,6 @@
 
 # Demo for Inmersion workshop
 
-New tags demo
 
 ## Introduction
 
