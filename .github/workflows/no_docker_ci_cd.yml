@@ -1,5 +1,5 @@
 name: (NO DOCKER)CI/CD .Net Core
-# trigger demo
+# trigger demo again
 on: 
   workflow_dispatch:
   push:
