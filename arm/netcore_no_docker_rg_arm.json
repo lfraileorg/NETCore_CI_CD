@@ -24,7 +24,7 @@
         "apiVersion": "2018-05-01-preview",
         "name": "[parameters('sites_netcoregithub_name')]",
         "type": "microsoft.insights/components",
-        "location": "westeurope",
+        "location": "West US",
         "properties": {
           "ApplicationId": "[parameters('sites_netcoregithub_name')]"
         }
@@ -33,7 +33,7 @@
         "type": "Microsoft.Sql/servers",
         "apiVersion": "2019-06-01-preview",
         "name": "[parameters('servers_netcoregithub_name')]",
-        "location": "westeurope",
+        "location": "West US",
         "kind": "v12.0",
         "properties": {
           "administratorLogin": "[concat(parameters('servers_netcoregithub_name'), 'admin')]",
@@ -58,7 +58,7 @@
         "type": "Microsoft.Web/serverfarms",
         "apiVersion": "2018-02-01",
         "name": "[parameters('serverfarms_netcoregithubplan_name')]",
-        "location": "West Europe",
+        "location": "West US",
         "sku": {
           "name": "P1v2",
           "tier": "PremiumV2",
@@ -84,7 +84,7 @@
         "type": "Microsoft.Sql/servers/databases",
         "apiVersion": "2019-06-01-preview",
         "name": "[concat(parameters('servers_netcoregithub_name'), '/eShopOnWeb.CatalogDb')]",
-        "location": "westeurope",
+        "location": "West US",
         "dependsOn": [
           "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
         ],
@@ -111,7 +111,7 @@
         "type": "Microsoft.Sql/servers/databases",
         "apiVersion": "2019-06-01-preview",
         "name": "[concat(parameters('servers_netcoregithub_name'), '/eShopOnWeb.Identity')]",
-        "location": "westeurope",
+        "location": "West US",
         "dependsOn": [
           "[resourceId('Microsoft.Sql/servers', parameters('servers_netcoregithub_name'))]"
         ],
@@ -138,7 +138,7 @@
         "type": "Microsoft.Storage/storageAccounts",
         "apiVersion": "2018-02-01",
         "name": "[parameters('sites_netcoregithub_name')]",
-        "location": "westeurope",
+        "location": "West US",
         "tags": {
           "displayName": "[parameters('sites_netcoregithub_name')]"
         },
@@ -165,7 +165,7 @@
         "type": "Microsoft.Web/sites",
         "apiVersion": "2018-11-01",
         "name": "[parameters('sites_netcoregithub_name')]",
-        "location": "West Europe",
+        "location": "West US",
         "dependsOn": [
           "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_netcoregithubplan_name'))]",
           "[resourceId('Microsoft.Insights/components/', parameters('sites_netcoregithub_name'))]"
@@ -247,7 +247,7 @@
         "type": "Microsoft.Web/sites/config",
         "apiVersion": "2018-11-01",
         "name": "[concat(parameters('sites_netcoregithub_name'), '/web')]",
-        "location": "West Europe",
+        "location": "West US",
         "dependsOn": [
           "[resourceId('Microsoft.Web/sites', parameters('sites_netcoregithub_name'))]"
         ],
