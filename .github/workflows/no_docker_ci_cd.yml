@@ -100,12 +100,7 @@ jobs:
         app-name: netcoregithubapp
         connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
         slot-name: swap 
-        
-    - name: Azure CLI Action
-      uses: Azure/cli@v1
-      with:        
-        inlineScript: az webapp deployment slot swap --slot -g NetCore_NoDocker_GIthubCI_CD_RG -n netcoregithubapp --slot swap --target-slot production      
-        
+
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
       with:
@@ -119,7 +114,21 @@ jobs:
         server-name: netcoregithub.database.windows.net
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
-    
+        
+  swap-slots:
+    needs: deploy_nodocker
+    environment: load_tests
+    steps:
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI Action
+        uses: Azure/cli@v1
+        with:        
+          inlineScript: az webapp deployment slot swap --slot -g NetCore_NoDocker_GIthubCI_CD_RG -n netcoregithubapp --slot swap --target-slot production      
+
     # - name: Download load_tests
     #   uses: actions/download-artifact@v2
     #   with:
