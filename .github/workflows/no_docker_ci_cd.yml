@@ -118,6 +118,7 @@ jobs:
   swap-slots:
     needs: deploy_nodocker
     environment: load_tests
+    runs-on: ubuntu-latest
     steps:
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
