@@ -92,14 +92,12 @@ jobs:
       with:
         app-name: netcoregithubapp      
         package: web_site
-        slot-name: swap
 
     - name: Azure App Service Settings
       uses: Azure/appservice-settings@v1
       with:
         app-name: netcoregithubapp
         connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
-        slot-name: swap 
 
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
@@ -115,20 +113,20 @@ jobs:
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
         
-  swap-slots:
-    needs: deploy_nodocker
-    environment: load_tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  # swap-slots:
+  #   needs: deploy_nodocker
+  #   environment: load_tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: 'Login via Azure CLI'
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Azure CLI Action
-        uses: Azure/cli@v1
-        with:        
-          inlineScript: az webapp deployment slot swap -g NetCore_NoDocker_GIthubCI_CD_RG -n netcoregithubapp --slot swap --target-slot production      
+  #     - name: Azure CLI Action
+  #       uses: Azure/cli@v1
+  #       with:        
+  #         inlineScript: az webapp deployment slot swap -g NetCore_NoDocker_GIthubCI_CD_RG -n netcoregithubapp --slot swap --target-slot production      
 
     # - name: Download load_tests
     #   uses: actions/download-artifact@v2
