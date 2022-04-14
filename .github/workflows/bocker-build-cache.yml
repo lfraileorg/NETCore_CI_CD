@@ -7,9 +7,6 @@ on:
         description: Avoid cache
         required: true
         type: boolean
-        
-  push:    
-    branches: [ docker-buildx-cache ]
 
 env:
   build_config: Release      
@@ -30,7 +27,7 @@ jobs:
         version: latest
 
     - name: Cache Docker layers
-      if: ${{ inputs.avoid_cache != 'true' }}
+      if: ${{ inputs.avoid_cache == 'true' }}
       uses: actions/cache@v2
       with:
         path: /tmp/.buildx-cache
