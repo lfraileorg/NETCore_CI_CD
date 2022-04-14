@@ -38,8 +38,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-buildx-
    
-    - name: Build and push
+    - name: Build (Cached)
       uses: docker/build-push-action@v2
+      if: ${{ inputs.avoid_cache != 'true' }}
       with:
         context: .
         push: false
@@ -47,6 +48,15 @@ jobs:
         tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+    - name: Build  (not cached)
+      uses: docker/build-push-action@v2
+      if: ${{ inputs.avoid_cache != 'true' }}
+      with:
+        context: .
+        push: false
+        file: src/Web/Dockerfile
+        tags: ${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
     
       # Temp fix
       # https://github.com/docker/build-push-action/issues/252
