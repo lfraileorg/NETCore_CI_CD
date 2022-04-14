@@ -27,7 +27,7 @@ jobs:
         version: latest
 
     - name: Cache Docker layers
-      if: ${{ inputs.avoid_cache == 'true' }}
+      if: ${{ inputs.avoid_cache == 'false' }}
       uses: actions/cache@v2
       with:
         path: /tmp/.buildx-cache
@@ -37,7 +37,7 @@ jobs:
    
     - name: Build (Cached)
       uses: docker/build-push-action@v2
-      if: ${{ inputs.avoid_cache != 'true' }}
+      if: ${{ inputs.avoid_cache == 'false' }}
       with:
         context: .
         push: false
