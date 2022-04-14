@@ -3,7 +3,8 @@ name: Docker build with cache
 on: 
   workflow_dispatch:
     inputs:
-      use_cache:
+      avoid_cache:
+        description: Avoid cache
         required: true
         type: boolean
         
@@ -29,7 +30,7 @@ jobs:
         version: latest
 
     - name: Cache Docker layers
-      if: ${{ inputs.use_cache == 'true' }}
+      if: ${{ inputs.avoid_cache != 'true' }}
       uses: actions/cache@v2
       with:
         path: /tmp/.buildx-cache
