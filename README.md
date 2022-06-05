@@ -1,7 +1,7 @@
 
 # Demo for Inmersion workshop
 
-Deploy!!
+Deploy for demo!!
 ## Introduction
 
 Here we are supposed to talk about the different things on the project :)
