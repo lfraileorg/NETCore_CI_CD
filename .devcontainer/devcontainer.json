@@ -29,7 +29,7 @@
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001],
+	"forwardPorts": [4491, 4492],
 
 	// [Optional] To reuse of your local HTTPS dev cert:
 	//
@@ -52,5 +52,5 @@
 
 	// postCreateCommand.sh parameters: $1=SA password, $2=dacpac path, $3=sql script(s) path
 	"postCreateCommand": "bash .devcontainer/init-app/init-db.sh"
-
+	
 }
