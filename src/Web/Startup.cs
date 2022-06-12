@@ -231,7 +231,10 @@ namespace Microsoft.eShopWeb.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            if(String.Compare(env.EnvironmentName, "Codespaces",StringComparison.InvariantCultureIgnoreCase) == -1)
+            {
+                app.UseHttpsRedirection();
+            }
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseRouting();
