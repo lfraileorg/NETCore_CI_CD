@@ -29,7 +29,7 @@
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [4491, 4492],
+	"forwardPorts": [5091, 5092],
 
 	// [Optional] To reuse of your local HTTPS dev cert:
 	//
