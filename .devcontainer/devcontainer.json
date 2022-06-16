@@ -4,7 +4,9 @@
 	"service": "app",
 	"workspaceFolder": "/workspace",
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" ],
-
+	"containerEnv": {
+		"ASPNETCORE_ENVIRONMENT": "Codespaces"
+	},
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
