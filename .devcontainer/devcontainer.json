@@ -9,17 +9,6 @@
 	"remoteEnv": {
 		"ASPNETCORE_ENVIRONMENT": "Codespaces"
 	},
-	"customizations": {
-		"codespaces": {
-			"repositories": {
-				"lfraileorg/github-runners": {
-					"permissions": {
-						"permissions": "write-all"
-					}
-				}
-			}
-		}
-	},
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
