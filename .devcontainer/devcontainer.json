@@ -12,11 +12,11 @@
 	"customizations": {
 		"codespaces": {
 			"repositories": {
-				"lfraileorg/github-runners": {
-					"permissions": {
-						"permissions": "write-all"
-					}
-				}
+				"lfraileorg/github-runners":  {
+				     "permissions": {
+					     "contents": "write"
+				     }
+				  }
 			}
 		}
 	},
