@@ -3,7 +3,8 @@ name: (NO DOCKER)CI/CD .Net Core
 on: 
   workflow_dispatch:
   push:
-
+  pull_request:
+    branches: [ main ]
 jobs:
   build_nodocker:
     runs-on: ubuntu-latest
