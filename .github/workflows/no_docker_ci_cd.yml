@@ -53,6 +53,7 @@ jobs:
     needs: build_nodocker
     environment: dev_nodocker
     runs-on: windows-latest
+    if: github.ref != 'refs/heads/main'
     env:
       resource_group: NetCore_NoDocker_GitHub_DEV_RG
       app_name: netcoregithubdev
@@ -124,6 +125,7 @@ jobs:
     needs: deploy_nodocker_dev
     environment: pro_nodocker
     runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'
     env:
       resource_group: NetCore_NoDocker_GitHub_PRO_RG
       app_name: netcoregithubpro
