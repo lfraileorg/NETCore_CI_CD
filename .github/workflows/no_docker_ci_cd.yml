@@ -123,7 +123,7 @@ jobs:
         sql-file: sql_scripts/identity.sql
 
   deploy_nodocker_pro:
-    needs: deploy_nodocker_dev
+    needs: build_nodocker
     environment: pro_nodocker
     runs-on: windows-latest
     if: github.ref == 'refs/heads/main'
