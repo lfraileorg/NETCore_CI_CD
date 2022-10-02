@@ -125,11 +125,12 @@ jobs:
     needs: deploy_nodocker_dev
     environment: pro_nodocker
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     env:
       resource_group: NetCore_NoDocker_GitHub_PRO_RG
       app_name: netcoregithubpro
       sql_server: netcoregithubpro
+      slot_name: staging
     steps:
     - name: Download scripts
       uses: actions/download-artifact@v2
@@ -167,17 +168,23 @@ jobs:
         deploymentName: deploy-${{ github.run_id }}
         parameters: serverfarms_netcoregithubplan_name=${{ env.app_name }} sites_netcoregithub_name=${{ env.app_name }} sqlserver_password=${{ secrets.DB_PASSWORD }} servers_netcoregithub_name=${{ env.sql_server }}
 
+    - run: |
+        az group create -n ${{ env.resource_group }} --location "West Europe"
+        az webapp deployment slot create --name ${{ env.app_name }} --resource-group ${{ env.resource_group }} --slot ${{ env.slot_name }}
+
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.app_name }}      
         package: web_site
+        slot-name: ${{ env.slot_name }}
 
     - name: Azure App Service Settings
       uses: Azure/appservice-settings@v1
       with:
         app-name: ${{ env.app_name }}
         connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
+        slot-name: ${{ env.slot_name }}
 
     - name: Azure SQL Deploy
       uses: Azure/sql-action@v1
@@ -193,20 +200,24 @@ jobs:
         connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
         sql-file: sql_scripts/identity.sql
    
-  # swap-slots:
-  #   needs: deploy_nodocker
-  #   environment: load_tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: 'Login via Azure CLI'
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+  swap-slots:
+    needs: deploy_nodocker_pro
+    environment: pro_nodocker_swap
+    runs-on: ubuntu-latest
+    env:
+      resource_group: NetCore_NoDocker_GitHub_PRO_RG
+      app_name: netcoregithubpro
+      slot_name: staging
+    steps:
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #     - name: Azure CLI Action
-  #       uses: Azure/cli@v1
-  #       with:        
-  #         inlineScript: az webapp deployment slot swap -g NetCore_NoDocker_GIthubCI_CD_RG -n netcoregithubapp --slot swap --target-slot production      
+      - name: Azure CLI Action
+        uses: Azure/cli@v1
+        with:        
+          inlineScript: az webapp deployment slot swap -g ${{ env.resource_group }} -n ${{ env.app_name }} --slot ${{ env.slot_name }} --target-slot production      
 
     # - name: Download load_tests
     #   uses: actions/download-artifact@v2
