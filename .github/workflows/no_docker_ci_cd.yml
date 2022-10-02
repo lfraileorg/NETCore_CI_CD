@@ -3,7 +3,6 @@ name: (NO DOCKER)CI/CD .Net Core
 on: 
   workflow_dispatch:
   push:
-    branches: [ restore_simple_webapp_version ] 
 
 jobs:
   build_nodocker:
