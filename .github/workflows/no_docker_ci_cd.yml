@@ -74,13 +74,16 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
+  
+    - run: |
+        az group create -n NetCore_NoDocker_GitHub_DEV_RG --location "West Europe"
+    
     - name: Deploy Azure Resource Manager (ARM) Template
       uses: Azure/arm-deploy@v1
       with:        
         scope: resourcegroup
         subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'     
-        resourceGroupName: 'NetCore_NoDocker_GIthubCI_CD_RG'
+        resourceGroupName: 'NetCore_NoDocker_GitHub_DEV_RG'
         # Specify the path or URL to the Azure Resource Manager template.
         template: arm_template/netcore_no_docker_rg_arm.json
         deploymentMode: Incremental
