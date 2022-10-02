@@ -11,6 +11,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize] // Controllers that mainly require Authorization still use Controller/View; other pages use Pages
     [Route("[controller]/[action]")]
+    [IgnoreAntiforgeryToken]
     public class OrderController : Controller
     {
         private readonly IMediator _mediator;

@@ -28,6 +28,7 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using BlazorShared;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -159,6 +160,7 @@ namespace Microsoft.eShopWeb.Web
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                          new SlugifyParameterTransformer()));
+                options.Filters.Add(new IgnoreAntiforgeryTokenAttribute());
 
             });
             services.AddControllersWithViews();

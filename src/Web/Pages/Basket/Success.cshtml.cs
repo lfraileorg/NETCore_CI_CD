@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
     [Authorize]
+    [IgnoreAntiforgeryToken]
     public class SuccessModel : PageModel
     {
         public void OnGet()

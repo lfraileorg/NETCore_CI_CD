@@ -8,6 +8,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [IgnoreAntiforgeryToken]
     public class FileController : ControllerBase
     {
         [HttpPost]

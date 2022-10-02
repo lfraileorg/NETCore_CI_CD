@@ -11,6 +11,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [IgnoreAntiforgeryToken]
     public class UserController : ControllerBase
     {
         private readonly ITokenClaimsService _tokenClaimsService;

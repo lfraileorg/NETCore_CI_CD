@@ -17,6 +17,7 @@ using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 namespace Microsoft.eShopWeb.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

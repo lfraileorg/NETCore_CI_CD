@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
     [Authorize]
+    [IgnoreAntiforgeryToken]
     public class CheckoutModel : PageModel
     {
         private readonly IBasketService _basketService;

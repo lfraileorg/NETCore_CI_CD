@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.Web.Pages.Basket
 {
+    [IgnoreAntiforgeryToken]
     public class IndexModel : PageModel
     {
         private readonly IBasketService _basketService;
