@@ -80,7 +80,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
   
     - run: |
-        az group create -n $resource_group --location "West Europe"
+        az group create -n ${{ env.resource_group }} --location "West Europe"
     
     - name: Deploy Azure Resource Manager (ARM) Template
       uses: Azure/arm-deploy@v1
