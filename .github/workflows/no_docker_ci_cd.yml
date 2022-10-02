@@ -51,7 +51,7 @@ jobs:
         path: load_tests
   deploy_nodocker:
     needs: build_nodocker
-    environment: load_tests
+    environment: dev_nodocker
     runs-on: windows-latest
     steps:
     - name: Download scripts
