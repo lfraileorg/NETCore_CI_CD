@@ -10,7 +10,7 @@ on:
     #   - src/**
     #   - eShopOnWeb.sln
   push:
-    tags: [ release-* ]
+    # tags: [ release-* ]
     # paths: 
     #   - .github/workflows/ci-cd.yml
     #   - src/PublicApi/**
