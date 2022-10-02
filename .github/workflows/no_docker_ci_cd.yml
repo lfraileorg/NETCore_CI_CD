@@ -169,8 +169,7 @@ jobs:
         parameters: serverfarms_netcoregithubplan_name=${{ env.app_name }} sites_netcoregithub_name=${{ env.app_name }} sqlserver_password=${{ secrets.DB_PASSWORD }} servers_netcoregithub_name=${{ env.sql_server }}
 
     - run: |
-        az group create -n ${{ env.resource_group }} --location "West Europe"
-        az webapp deployment slot create --name ${{ env.app_name }} --resource-group ${{ env.resource_group }} --slot ${{ env.slot_name }}
+        az webapp deployment slot create --name ${{ env.app_name }} --resource-group ${{ env.resource_group }} --slot ${{ env.slot_name }} --configuration-source ${{ env.app_name }}
 
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
