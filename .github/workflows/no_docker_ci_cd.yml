@@ -68,7 +68,7 @@ jobs:
   deploy_nodocker_pro:
     needs: build_nodocker
     uses:  ./.github/workflows/reusable-workflow-deploy.yml
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     with:
       resource_group: NetCore_NoDocker_GitHub_PRO_RG
       app_name: netcoregithubpro
