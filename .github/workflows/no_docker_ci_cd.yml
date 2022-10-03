@@ -52,7 +52,7 @@ jobs:
 
   deploy_nodocker_dev:    
     needs: build_nodocker
-    uses: reusable-workflow-deploy.yml
+    uses:  ./.github/workflows/reusable-workflow-deploy.yml
     with:
       resource_group: NetCore_NoDocker_GitHub_DEV_RG
       app_name: netcoregithubdev
