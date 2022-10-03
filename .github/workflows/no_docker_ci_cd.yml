@@ -57,8 +57,13 @@ jobs:
       resource_group: NetCore_NoDocker_GitHub_DEV_RG
       app_name: netcoregithubdev
       sql_server: netcoregithubdev
+      environment_name: dev_nodocker
+      slot_name: production
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}   
+      CONNSTRING_JSON: ${{ secrets.CONNSTRING_JSON }}   
+      CATALOG_DB_CONNSTRING: ${{ secrets.CATALOG_DB_CONNSTRING }}   
+      IDENTITY_DB_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}   
 
   deploy_nodocker_pro:
     needs: build_nodocker
