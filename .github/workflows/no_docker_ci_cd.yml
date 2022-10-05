@@ -10,7 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      build_config: release
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -20,6 +21,14 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./eShopOnWeb.sln
     - name: Build
-      run: dotnet build ./eShopOnWeb.sln --no-restore
+      run: dotnet build ./eShopOnWeb.sln --no-restore -c $build_config
     - name: Test
-      run: dotnet test ./eShopOnWeb.sln --no-build --verbosity normal
+      run: dotnet test ./eShopOnWeb.sln --no-build --verbosity normal -c $build_config
+    - name: Publish
+      working-directory: ./src/Web
+      run: dotnet build ./eShopOnWeb.sln --no-restore -o ../../web_publish -c $build_config
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:      
+        name: web
+        path: ./web_publish
