@@ -1,4 +1,4 @@
-name: (NO DOCKER)CI/CD .Net Core
+name: (NO DOCKER)CI/CD .Net Core - TESTS
 
 on: 
   workflow_dispatch:
