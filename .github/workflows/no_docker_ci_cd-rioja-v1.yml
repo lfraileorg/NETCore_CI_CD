@@ -1,0 +1,125 @@
+#no_docker_ci_cd.yml
+name: riojav1 CI/CD .Net Core
+
+on: 
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build_nodocker:
+    runs-on: ubuntu-latest
+    env:
+      build_config: Release
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 3.1.402  
+    - name: Install dotnet tools
+      run: dotnet tool restore
+    - name: Build with dotnet
+      run: dotnet build ./eShopOnWeb.sln --configuration $build_config
+    - name: Test with dotnet
+      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
+    - name: Publish site
+      working-directory: ./src/Web
+      run: dotnet publish -c $build_config -o ../../web_publish
+    - name: Catalog SQL Script
+      run: dotnet ef migrations script -c catalogcontext -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/catalog.sql
+    - name: Identity SQL Script
+      run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
+    - name: Upload scripts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql_scripts
+        path: ./scripts
+    - name: Upload site
+      uses: actions/upload-artifact@v2
+      with:
+        name: web_site
+        path: ./web_publish
+    - name: Upload ARM
+      uses: actions/upload-artifact@v2
+      with:
+        name: arm_template
+        path: arm
+    - name: Upload Loadtests
+      uses: actions/upload-artifact@v2
+      with:
+        name: load_tests
+        path: load_tests
+
+  deploy_nodocker_dev:
+    needs: build_nodocker
+    environment: dev_nodocker
+    runs-on: windows-latest
+    if: github.ref != 'refs/heads/main'
+    env:
+      resource_group: NetCore_NoDocker_GitHub_DEV_RG
+      app_name: netcoregithubdev
+      sql_server: netcoregithubdev
+    steps:
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+    - name: Download site
+      uses: actions/download-artifact@v2
+      with:
+        name: web_site
+        path: web_site
+    - name: Download arm
+      uses: actions/download-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
+    - run: |
+        az group create -n ${{ env.resource_group }} --location "West Europe"
+    
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1
+      with:        
+        scope: resourcegroup
+        subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'     
+        resourceGroupName: '${{ env.resource_group }}'
+        # Specify the path or URL to the Azure Resource Manager template.
+        template: arm_template/netcore_no_docker_rg_arm.json
+        deploymentMode: Incremental
+        deploymentName: deploy-${{ github.run_id }}
+        parameters: serverfarms_netcoregithubplan_name=${{ env.app_name }} sites_netcoregithub_name=${{ env.app_name }} sqlserver_password=${{ secrets.DB_PASSWORD }} servers_netcoregithub_name=${{ env.sql_server }}
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.app_name }}      
+        package: web_site
+
+    - name: Azure App Service Settings
+      uses: Azure/appservice-settings@v1
+      with:
+        app-name: ${{ env.app_name }}
+        connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
+
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: ${{ env.sql_server }}.database.windows.net
+        connection-string: ${{ secrets.CATALOG_DB_CONNSTRING }}
+        sql-file: sql_scripts/catalog.sql
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: ${{ env.sql_server }}.database.windows.net
+        connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+        sql-file: sql_scripts/identity.sql
