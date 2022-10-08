@@ -1,11 +1,12 @@
-name: Rioja NET Live Demo
+#no_docker_ci_cd.yml
+name: (NO DOCKER)CI/CD .Net Core
 
-on:
+on: 
+  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
-
+    branches: [ main ]
 jobs:
   build_nodocker:
     runs-on: ubuntu-latest
@@ -45,4 +46,59 @@ jobs:
       with:
         name: arm_template
         path: arm
+    - name: Upload Loadtests
+      uses: actions/upload-artifact@v2
+      with:
+        name: load_tests
+        path: load_tests
 
+  deploy_nodocker_dev:    
+    needs: build_nodocker
+    uses:  ./.github/workflows/reusable-workflow-deploy.yml
+    if: github.ref != 'refs/heads/main'
+    with:
+      resource_group: NetCore_NoDocker_GitHub_DEV_RG
+      app_name: netcoregithubdev
+      sql_server: netcoregithubdev
+      environment_name: dev_nodocker
+      slot_name: production
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}   
+      CONNSTRING_JSON: ${{ secrets.CONNSTRING_JSON }}   
+      CATALOG_DB_CONNSTRING: ${{ secrets.CATALOG_DB_CONNSTRING }}   
+      IDENTITY_DB_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}   
+
+  deploy_nodocker_pro:
+    needs: build_nodocker
+    uses:  ./.github/workflows/reusable-workflow-deploy.yml
+    if: github.ref == 'refs/heads/main'
+    with:
+      resource_group: NetCore_NoDocker_GitHub_PRO_RG
+      app_name: netcoregithubpro
+      sql_server: netcoregithubpro
+      environment_name: pro_nodocker
+      slot_name: staging
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}   
+      CONNSTRING_JSON: ${{ secrets.CONNSTRING_JSON }}   
+      CATALOG_DB_CONNSTRING: ${{ secrets.CATALOG_DB_CONNSTRING }}   
+      IDENTITY_DB_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}   
+
+  swap-slots:
+    needs: deploy_nodocker_pro
+    environment: pro_nodocker_swap
+    runs-on: ubuntu-latest
+    env:
+      resource_group: NetCore_NoDocker_GitHub_PRO_RG
+      app_name: netcoregithubpro
+      slot_name: staging
+    steps:
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI Action
+        uses: Azure/cli@v1
+        with:        
+          inlineScript: az webapp deployment slot swap -g ${{ env.resource_group }} -n ${{ env.app_name }} --slot ${{ env.slot_name }} --target-slot production      
