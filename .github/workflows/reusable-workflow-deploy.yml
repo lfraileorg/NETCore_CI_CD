@@ -1,0 +1,104 @@
+on:
+  workflow_call:
+    inputs:
+      resource_group:
+        required: true
+        type: string
+      app_name:
+        required: true
+        type: string
+      sql_server:
+        required: true
+        type: string
+      environment_name:
+        required: true
+        type: string
+      slot_name:
+        required: true
+        type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      CONNSTRING_JSON:
+        required: true
+      CATALOG_DB_CONNSTRING:
+        required: true
+      IDENTITY_DB_CONNSTRING:
+        required: true
+jobs:      
+  deploy_nodocker:
+    environment: ${{ inputs.environment_name }}
+    runs-on: windows-latest
+    env:
+      resource_group: ${{ inputs.resource_group }}
+      app_name: ${{ inputs.app_name }}
+      sql_server: ${{ inputs.sql_server }}
+      slot_name: ${{ inputs.slot_name }}
+    steps:
+    - name: Download scripts
+      uses: actions/download-artifact@v2
+      with:
+        name: sql_scripts
+        path: sql_scripts
+    - name: Download site
+      uses: actions/download-artifact@v2
+      with:
+        name: web_site
+        path: web_site
+    - name: Download arm
+      uses: actions/download-artifact@v2
+      with:
+        name: arm_template
+        path: arm_template
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - run: |
+        az group create -n ${{ env.resource_group }} --location "West Europe"
+    
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1
+      with:        
+        scope: resourcegroup
+        subscriptionId: '26da47a8-c28d-4564-ae8e-8ba88e995a0a'     
+        resourceGroupName: '${{ env.resource_group }}'
+        # Specify the path or URL to the Azure Resource Manager template.
+        template: arm_template/netcore_no_docker_rg_arm.json
+        deploymentMode: Incremental
+        deploymentName: deploy-${{ github.run_id }}
+        parameters: serverfarms_netcoregithubplan_name=${{ env.app_name }} sites_netcoregithub_name=${{ env.app_name }} sqlserver_password=${{ secrets.DB_PASSWORD }} servers_netcoregithub_name=${{ env.sql_server }}
+
+    - run: |
+        az webapp deployment slot create --name ${{ env.app_name }} --resource-group ${{ env.resource_group }} --slot ${{ env.slot_name }} --configuration-source ${{ env.app_name }}
+      if: env.slot_name != 'production'
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.app_name }}      
+        package: web_site
+        slot-name: ${{ env.slot_name }}
+
+    - name: Azure App Service Settings
+      uses: Azure/appservice-settings@v1
+      with:
+        app-name: ${{ env.app_name }}
+        connection-strings-json: ${{ secrets.CONNSTRING_JSON }}
+        slot-name: ${{ env.slot_name }}
+
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: ${{ env.sql_server }}.database.windows.net
+        connection-string: ${{ secrets.CATALOG_DB_CONNSTRING }}
+        sql-file: sql_scripts/catalog.sql
+        
+    - name: Azure SQL Deploy
+      uses: Azure/sql-action@v1
+      with:
+        server-name: ${{ env.sql_server }}.database.windows.net
+        connection-string: ${{ secrets.IDENTITY_DB_CONNSTRING }}
+        sql-file: sql_scripts/identity.sql
