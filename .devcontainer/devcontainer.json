@@ -1,0 +1,21 @@
+{
+	"name": "C# (.NET)",
+	"image": "mcr.microsoft.com/devcontainers/dotnet:0-3.1",
+	"customizations": {
+		"codespaces": {
+			"repositories": {
+				"lfraileorg/github-runners": {
+					"permissions": {
+						"contents": "write"
+					}
+				}
+			}
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "none"
+		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {}
+	}
+}
