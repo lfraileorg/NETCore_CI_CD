@@ -25,6 +25,8 @@ on:
         required: true
       IDENTITY_DB_CONNSTRING:
         required: true
+      DB_PASSWORD:
+        required: true
 jobs:      
   deploy_nodocker:
     environment: ${{ inputs.environment_name }}
