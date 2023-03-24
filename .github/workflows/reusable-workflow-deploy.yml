@@ -26,11 +26,11 @@ on:
       DB_PASSWORD:
         required: true
       AZURE_CLIENT_ID:
-        type: string
+        required: true
       AZURE_TENANT_ID:
-        type: string
+        required: true
       AZURE_SUBSCRIPTION_ID:
-        type: string
+        required: true
 jobs:      
   deploy_nodocker:
     environment: ${{ inputs.environment_name }}
