@@ -16,9 +16,7 @@ on:
       slot_name:
         required: true
         type: string
-    secrets:
-      AZURE_CREDENTIALS:
-        required: true
+    secrets:      
       CONNSTRING_JSON:
         required: true
       CATALOG_DB_CONNSTRING:
@@ -27,8 +25,16 @@ on:
         required: true
       DB_PASSWORD:
         required: true
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
 jobs:      
   deploy_nodocker:
+    permissions:
+      id-token: write
     environment: ${{ inputs.environment_name }}
     runs-on: windows-latest
     env:
@@ -56,7 +62,10 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+        enable-AzPSSession: true
 
     - run: |
         az group create -n ${{ env.resource_group }} --location "West Europe"
