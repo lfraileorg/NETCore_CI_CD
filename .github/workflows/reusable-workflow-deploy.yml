@@ -33,6 +33,8 @@ on:
         required: true
 jobs:      
   deploy_nodocker:
+    permissions:
+      id-token: write
     environment: ${{ inputs.environment_name }}
     runs-on: windows-latest
     env:
