@@ -31,6 +31,8 @@ jobs:
       uses: microsoft/security-devops-action@preview
       continue-on-error: true
       id: msdo
+      with:
+        tools: binksim, antimalware, terrascan, templateanalyzer
 
     # Upload alerts to the Security tab
     - name: Upload alerts to Security tab
