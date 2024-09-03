@@ -44,17 +44,17 @@ jobs:
       slot_name: ${{ inputs.slot_name }}
     steps:
     - name: Download scripts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: sql_scripts
         path: sql_scripts
     - name: Download site
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: web_site
         path: web_site
     - name: Download arm
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: arm_template
         path: arm_template

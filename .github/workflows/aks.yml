@@ -89,13 +89,13 @@ jobs:
     steps:
 
     - name: Download aks
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: aks
         path: aks
 
     - name: Download charts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: chart
         path: chart
@@ -171,13 +171,13 @@ jobs:
     environment: CANARIES_40
     steps:
     - name: Download aks
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: aks
         path: aks
     
     - name: Download charts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: chart
         path: chart
@@ -238,13 +238,13 @@ jobs:
     environment: CANARIES_60
     steps:
     - name: Download aks
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: aks
         path: aks
     
     - name: Download charts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: chart
         path: chart
@@ -305,13 +305,13 @@ jobs:
     environment: GA
     steps:
     - name: Download aks
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: aks
         path: aks
 
     - name: Download charts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: chart
         path: chart

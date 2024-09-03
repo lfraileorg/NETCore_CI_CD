@@ -75,7 +75,7 @@ jobs:
       RESOURCE_GROUP: NetCore_GIthubCI_CD_RG
     steps:
     - name: Download arm
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: arm_template
         path: arm_template
@@ -99,7 +99,7 @@ jobs:
         parameters: applicationInsightsInstrumentationKey="${{ secrets.AI_INSTRUMENTATION_KEY }}" catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdck serverfarms_netcoregithubplan_name=netcoregithubplan sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
 
     - name: Download scripts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: sql_scripts
         path: sql_scripts    
@@ -127,7 +127,7 @@ jobs:
       RESOURCE_GROUP: NetCore_GitHubCI_CD_PRO_RG
     steps:
     - name: Download arm
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: arm_template
         path: arm_template
@@ -151,7 +151,7 @@ jobs:
         parameters: applicationInsightsInstrumentationKey="${{ secrets.AI_INSTRUMENTATION_KEY }}" catalogConnstring="${{ secrets.CATALOG_DB_CONNSTRING }}" identityConnstring="${{ secrets.IDENTITY_DB_CONNSTRING }}" sites_netcoregithub_name=netcoreghdckpro serverfarms_netcoregithubplan_name=netcoregithubplanpro servers_netcoregithub_name=netcoreghdckpro sqlserver_password=${{ secrets.DB_PASSWORD }} dockerRegistryUrl=${{ env.registry_name }} dockerRegistryUsername=${{ secrets.ACR_USER_NAME }} dockerRegistryPassword=${{ secrets.ACR_PASSWORD }} dockerImage=${{ env.registry_name }}/${{ env.repository_name }}:${{ github.sha }}
 
     - name: Download scripts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: sql_scripts
         path: sql_scripts    
