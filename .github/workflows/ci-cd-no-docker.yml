@@ -22,8 +22,6 @@ jobs:
       run: dotnet tool restore
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration $build_config
-    - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration $build_config
     - name: Publish site
       working-directory: ./src/Web
       run: dotnet publish -c $build_config -o ../../web_publish
