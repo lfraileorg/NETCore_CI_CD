@@ -13,7 +13,7 @@ jobs:
     env:
       build_config: Release
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -32,22 +32,22 @@ jobs:
     - name: Identity SQL Script
       run: dotnet ef migrations script -c appidentitydbcontext  -i -p ./src/Infrastructure/Infrastructure.csproj -s ./src/Web/Web.csproj -o ./scripts/identity.sql
     - name: Upload scripts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: sql_scripts
         path: ./scripts
     - name: Upload site
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: web_site
         path: ./web_publish
     - name: Upload ARM
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: arm_template
         path: arm
     - name: Upload Loadtests
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: load_tests
         path: load_tests
