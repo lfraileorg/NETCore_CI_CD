@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 jobs:
   build_nodocker:
-    runs-on: ubuntu-2204
+    runs-on: ubuntu-22.04
     env:
       build_config: Release
     steps:
