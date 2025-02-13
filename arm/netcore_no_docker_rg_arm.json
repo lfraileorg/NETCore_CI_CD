@@ -256,7 +256,7 @@
           "netFrameworkVersion": "v4.0",
           "requestTracingEnabled": false,
           "remoteDebuggingEnabled": false,
-          "remoteDebuggingVersion": "VS2019",
+          "remoteDebuggingVersion": "VS2022",
           "httpLoggingEnabled": false,
           "logsDirectorySizeLimit": 35,
           "detailedErrorLoggingEnabled": false
