@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.402  
+        dotnet-version: 3.1.426  
     - name: Install dotnet tools
       run: dotnet tool restore
     - name: Build with dotnet
