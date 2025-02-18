@@ -63,9 +63,11 @@ jobs:
     - run: |
         gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
       if: github.ref == 'refs/heads/main'
+      name: Verify attestation
+      shell: bash
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      name: Verify attestation
+      
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
