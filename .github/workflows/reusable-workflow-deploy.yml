@@ -35,6 +35,7 @@ jobs:
   deploy_nodocker:
     permissions:
       id-token: write
+      attestations: write
     environment: ${{ inputs.environment_name }}
     runs-on: windows-latest
     env:
@@ -59,15 +60,11 @@ jobs:
       with:
         name: arm_template
         path: arm_template
-
-    - run: |
-        gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
-      if: github.ref == 'refs/heads/main'
-      name: Verify attestation
-      shell: bash
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+              
+    - name: Artifact Attestation
+      uses: actions/attest-build-provenance@v1
+      with:
+        subject-path: ${{ steps.download-site.outputs.download-path }}
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
