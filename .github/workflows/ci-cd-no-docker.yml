@@ -47,7 +47,7 @@ jobs:
         name: web_site
         path: ./web_publish
     - uses: actions/attest-build-provenance@v2
-      # if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main'
       with:
         subject-name: web_site
         subject-digest: sha256:${{ steps.upload-web.outputs.artifact-digest }}
