@@ -58,7 +58,12 @@ jobs:
       with:
         name: arm_template
         path: arm_template
-    
+
+    - run: |
+        gh attestation verify .\web_site.zip --owner ${{ github.repository_owner }}
+      if: github.ref == 'refs/heads/main'
+      name: Verify attestation
+
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
