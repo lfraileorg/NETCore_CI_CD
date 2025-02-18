@@ -60,13 +60,6 @@ jobs:
         name: arm_template
         path: arm_template
 
-    - run: |
-        winpty gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
-      if: github.ref == 'refs/heads/main'
-      name: Verify attestation
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
-
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
