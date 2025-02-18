@@ -49,6 +49,7 @@ jobs:
         name: sql_scripts
         path: sql_scripts
     - name: Download site
+      id: download-site
       uses: actions/download-artifact@v4
       with:
         name: web_site
@@ -60,7 +61,7 @@ jobs:
         path: arm_template
 
     - run: |
-        gh attestation verify .\web_site.zip --owner ${{ github.repository_owner }}
+        gh attestation verify ${{ steps.outputs.download-site.download-path }} --owner ${{ github.repository_owner }}
       if: github.ref == 'refs/heads/main'
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
