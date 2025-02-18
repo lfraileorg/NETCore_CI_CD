@@ -64,7 +64,6 @@ jobs:
         winpty gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
       if: github.ref == 'refs/heads/main'
       name: Verify attestation
-      shell: cmd
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
 
