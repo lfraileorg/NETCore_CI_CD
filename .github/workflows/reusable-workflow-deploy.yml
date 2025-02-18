@@ -60,11 +60,11 @@ jobs:
       with:
         name: arm_template
         path: arm_template
-              
+
     - name: Artifact Attestation
       uses: actions/attest-build-provenance@v1
       with:
-        subject-path: ${{ steps.download-site.outputs.download-path }}
+        subject-path: ${{ steps.download-site.outputs.download-path }}/**/Web.dll
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
