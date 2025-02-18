@@ -31,11 +31,10 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
-jobs:      
-  deploy_nodocker:
+jobs:
+  deploy_nodocker:    
     permissions:
-      id-token: write
-      attestations: write
+      id-token: write    
     environment: ${{ inputs.environment_name }}
     runs-on: windows-latest
     env:
@@ -61,10 +60,12 @@ jobs:
         name: arm_template
         path: arm_template
 
-    - name: Artifact Attestation
-      uses: actions/attest-build-provenance@v1
-      with:
-        subject-path: ${{ steps.download-site.outputs.download-path }}/**/Web.dll
+    - run: |
+        winpty gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
+      if: github.ref == 'refs/heads/main'
+      name: Verify attestation
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
