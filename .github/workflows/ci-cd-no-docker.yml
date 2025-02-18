@@ -9,6 +9,10 @@ on:
     branches: [ main ]
 jobs:
   build_nodocker:
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
     runs-on: ubuntu-22.04
     env:
       build_config: Release
