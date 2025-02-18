@@ -32,7 +32,24 @@ on:
       AZURE_SUBSCRIPTION_ID:
         required: true
 jobs:
-  deploy_nodocker:    
+  verify_attestation:    
+    runs-on: ubuntu-latest
+    steps:   
+    - name: Download site
+      id: download-site
+      uses: actions/download-artifact@v4
+      with:
+        name: web_site
+        path: web_site
+
+    - run: |
+        gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}      
+      name: Verify attestation
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
+
+  deploy_nodocker:
+    needs: verify_attestation 
     permissions:
       id-token: write    
     environment: ${{ inputs.environment_name }}
@@ -49,7 +66,6 @@ jobs:
         name: sql_scripts
         path: sql_scripts
     - name: Download site
-      id: download-site
       uses: actions/download-artifact@v4
       with:
         name: web_site
@@ -59,13 +75,6 @@ jobs:
       with:
         name: arm_template
         path: arm_template
-
-    - run: |
-        winpty gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
-      if: github.ref == 'refs/heads/main'
-      name: Verify attestation
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
