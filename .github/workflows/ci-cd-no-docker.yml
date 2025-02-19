@@ -81,8 +81,26 @@ jobs:
       IDENTITY_DB_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}   
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-  deploy_nodocker_pro:
+  verify_attestation:
     needs: build_nodocker
+    environment: pro_nodocker_swap
+    runs-on: ubuntu-latest    
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download site
+        id: download-site
+        uses: actions/download-artifact@v4
+        with:
+          name: web_site
+          path: web_site
+      - run: |
+          gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
+        if: github.ref == 'refs/heads/main'
+
+  deploy_nodocker_pro:
+    needs:
+      - build_nodocker
+      - verify_attestation
     uses:  ./.github/workflows/reusable-workflow-deploy.yml
     if: github.ref == 'refs/heads/main'
     concurrency: cd-pro-${{ github.ref }}
