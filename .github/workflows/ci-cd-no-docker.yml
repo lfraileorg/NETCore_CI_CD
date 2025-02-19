@@ -83,7 +83,6 @@ jobs:
 
   verify_attestation:
     needs: build_nodocker
-    environment: pro_nodocker_swap
     runs-on: ubuntu-latest    
     if: github.ref == 'refs/heads/main'
     steps:
@@ -96,6 +95,8 @@ jobs:
       - run: |
           gh attestation verify ${{ steps.download-site.outputs.download-path }} --owner ${{ github.repository_owner }}
         if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   deploy_nodocker_pro:
     needs:
