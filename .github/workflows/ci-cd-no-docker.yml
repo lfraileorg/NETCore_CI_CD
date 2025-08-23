@@ -105,7 +105,7 @@ jobs:
     environment: pro_nodocker_swap
     runs-on: ubuntu-latest
     env:
-      resource_group: NetCore_NoDocker_GitHub_PRO_RG
+      resource_group: Demo_Deploy_GitHub_PRO_RG
       app_name: netcoregithubpro
       slot_name: staging
     steps:
@@ -121,6 +121,7 @@ jobs:
         uses: Azure/cli@v1
         with:        
           inlineScript: az webapp deployment slot swap -g ${{ env.resource_group }} -n ${{ env.app_name }} --slot ${{ env.slot_name }} --target-slot production      
+
 
 
 
