@@ -46,10 +46,6 @@ jobs:
       with:
         name: web_site
         path: ./web_publish
-    - uses: actions/attest-build-provenance@v2
-      with:
-        subject-name: web_site
-        subject-digest: sha256:${{ steps.upload-web.outputs.artifact-digest }}
     - name: Upload ARM
       uses: actions/upload-artifact@v4
       with:
@@ -80,27 +76,10 @@ jobs:
       IDENTITY_DB_CONNSTRING: ${{ secrets.IDENTITY_DB_CONNSTRING }}   
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-  verify_attestation:
-    needs: build_nodocker
-    runs-on: ubuntu-latest    
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Download site
-        id: download-site
-        uses: actions/download-artifact@v4
-        with:
-          name: web_site
-          path: web_site
-      - run: |
-          gh attestation verify ${{ steps.download-site.outputs.download-path }}/Web.dll --owner ${{ github.repository_owner }}
-        if: github.ref == 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
 
   deploy_nodocker_pro:
     needs:
       - build_nodocker
-      - verify_attestation
     uses:  ./.github/workflows/reusable-workflow-deploy.yml
     if: github.ref == 'refs/heads/main'
     concurrency: cd-pro-${{ github.ref }}
@@ -142,4 +121,5 @@ jobs:
         uses: Azure/cli@v1
         with:        
           inlineScript: az webapp deployment slot swap -g ${{ env.resource_group }} -n ${{ env.app_name }} --slot ${{ env.slot_name }} --target-slot production      
+
 
