@@ -62,7 +62,7 @@ jobs:
     uses:  ./.github/workflows/reusable-workflow-deploy.yml
     if: github.ref != 'refs/heads/main'
     with:
-      resource_group: NetCore_NoDocker_GitHub_DEV_RG
+      resource_group: Demo_Deploy_GitHub_DEV_RG
       app_name: netcoregithubdev
       sql_server: netcoregithubdev
       environment_name: dev_nodocker
@@ -84,7 +84,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     concurrency: cd-pro-${{ github.ref }}
     with:
-      resource_group: NetCore_NoDocker_GitHub_PRO_RG
+      resource_group: Demo_Deploy_GitHub_PRO_RG
       app_name: netcoregithubpro
       sql_server: netcoregithubpro
       environment_name: pro_nodocker
@@ -121,5 +121,6 @@ jobs:
         uses: Azure/cli@v1
         with:        
           inlineScript: az webapp deployment slot swap -g ${{ env.resource_group }} -n ${{ env.app_name }} --slot ${{ env.slot_name }} --target-slot production      
+
 
 
