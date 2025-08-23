@@ -47,7 +47,6 @@ jobs:
         name: web_site
         path: ./web_publish
     - uses: actions/attest-build-provenance@v2
-      if: github.ref == 'refs/heads/main'
       with:
         subject-name: web_site
         subject-digest: sha256:${{ steps.upload-web.outputs.artifact-digest }}
@@ -143,3 +142,4 @@ jobs:
         uses: Azure/cli@v1
         with:        
           inlineScript: az webapp deployment slot swap -g ${{ env.resource_group }} -n ${{ env.app_name }} --slot ${{ env.slot_name }} --target-slot production      
+
