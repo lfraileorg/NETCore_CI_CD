@@ -23,7 +23,7 @@
 #
 # Create an Azure DevOps work item for each new GitHub issue.
 #
-# frontmatter-hash: e2885c2e0302f2381eee8348cf66d3faf18a19fc231abae277fda19a029d22c5
+# frontmatter-hash: df0cf71882ddf3faac28b391c3b3f9eb124af4472da55d5c9f408f1f5f95075c
 
 name: "GitHub Issue to Azure DevOps Work Item"
 "on":
@@ -218,7 +218,7 @@ jobs:
             const determineAutomaticLockdown = require('/opt/gh-aw/actions/determine_automatic_lockdown.cjs');
             await determineAutomaticLockdown(github, context, core);
       - name: Download container images
-        run: bash /opt/gh-aw/actions/download_docker_images.sh ghcr.io/github/gh-aw-firewall/agent:0.16.4 ghcr.io/github/gh-aw-firewall/squid:0.16.4 ghcr.io/github/gh-aw-mcpg:v0.1.4 ghcr.io/github/github-mcp-server:v0.30.3 ghcr.io/github/serena-mcp-server:latest node:lts-alpine python:alpine
+        run: bash /opt/gh-aw/actions/download_docker_images.sh ghcr.io/github/gh-aw-firewall/agent:0.16.4 ghcr.io/github/gh-aw-firewall/squid:0.16.4 ghcr.io/github/gh-aw-mcpg:v0.1.4 ghcr.io/github/github-mcp-server:v0.30.3 node:lts-alpine
       - name: Write Safe Outputs Config
         run: |
           mkdir -p /opt/gh-aw/safeoutputs
@@ -459,7 +459,7 @@ jobs:
                   "npx",
                   "-y",
                   "@azure-devops/mcp",
-                  "lfraile",
+                  "lfraileorg",
                   "--authentication",
                   "envvar",
                   "-d",
@@ -492,14 +492,6 @@ jobs:
                 "headers": {
                   "Authorization": "\${GH_AW_SAFE_OUTPUTS_API_KEY}"
                 }
-              },
-              "serena": {
-                "type": "stdio",
-                "container": "ghcr.io/github/serena-mcp-server:latest",
-                "args": ["--network", "host"],
-                "entrypoint": "serena",
-                "entrypointArgs": ["start-mcp-server", "--context", "codex", "--project", "\${GITHUB_WORKSPACE}", "--from", "git+https://github.com/oraios/serena", "serena"],
-                "mounts": ["\${GITHUB_WORKSPACE}:\${GITHUB_WORKSPACE}:rw"]
               }
             },
             "gateway": {
