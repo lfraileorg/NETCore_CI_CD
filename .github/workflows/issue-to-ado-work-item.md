@@ -23,6 +23,13 @@ mcp-servers:
   issues:
     types:
     - opened
+strict: false
+engine:
+  id: copilot
+network:
+  allowed:
+    - defaults 
+    - "dev.azure.com"
 permissions:
   actions: read
   contents: read
