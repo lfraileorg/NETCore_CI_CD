@@ -23,7 +23,7 @@
 #
 # Create an Azure DevOps work item for each new GitHub issue.
 #
-# frontmatter-hash: f40606980b711f3a43a192d019d2cf5de0773c5cbcbbb8f47b424362a28f4cf8
+# frontmatter-hash: 688340adf6fc973871aca470f8e283008418b2fd1b34fde746a75f866803e898
 
 name: "GitHub Issue to Azure DevOps Work Item"
 "on":
@@ -131,11 +131,20 @@ jobs:
               {"op": "add", "path": "/fields/System.Description", "value": $desc}
             ]')
 
-            curl -sS -u ":${AZDO_PAT}" \
+            response=$(curl -sS -f -u ":${AZDO_PAT}" \
               -H "Content-Type: application/json-patch+json" \
-              -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/$${work_item_type_encoded}?api-version=7.1-preview.3" \
-              -d "$payload" \
-              >/dev/null
+              -H "Accept: application/json" \
+              -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/${work_item_type_encoded}?api-version=7.1-preview.3" \
+              -d "$payload")
+
+            work_item_id=$(jq -r '.id // empty' <<<"$response")
+            if [ -n "$work_item_id" ]; then
+              echo "Created Azure DevOps work item $work_item_id"
+            else
+              echo "Azure DevOps response did not include a work item id."
+              echo "$response"
+              exit 1
+            fi
           done <<<"$ITEMS"
 
   agent:
@@ -170,11 +179,6 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Setup Node.js
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
-        with:
-          node-version: '24'
-          package-manager-cache: false
       - name: Create gh-aw temp directory
         run: bash /opt/gh-aw/actions/create_gh_aw_tmp_dir.sh
       - name: Configure Git credentials
@@ -504,9 +508,8 @@ jobs:
                 "container": "node:lts-alpine",
                 "entrypoint": "npx",
                 "entrypointArgs": [
-                  "npx",
                   "-y",
-                  "lfraileorg"
+                  "@modelcontextprotocol/server-azure-devops"
                 ],
                 "tools": [
                   "*"

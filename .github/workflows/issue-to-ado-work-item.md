@@ -11,10 +11,11 @@ roles: all
 mcp-servers:
   azure-devops:
     type: stdio
-    command: npx
-    args:
+    container: node:lts-alpine
+    entrypoint: npx
+    entrypointArgs:
     - -y
-    - "lfraileorg"
+    - "@modelcontextprotocol/server-azure-devops"
     allowed:
     - "*"
 safe-outputs:
@@ -93,11 +94,20 @@ safe-outputs:
                 {"op": "add", "path": "/fields/System.Description", "value": $desc}
               ]')
 
-              curl -sS -u ":${AZDO_PAT}" \
+              response=$(curl -sS -f -u ":${AZDO_PAT}" \
                 -H "Content-Type: application/json-patch+json" \
-                -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/$${work_item_type_encoded}?api-version=7.1-preview.3" \
-                -d "$payload" \
-                >/dev/null
+                -H "Accept: application/json" \
+                -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/${work_item_type_encoded}?api-version=7.1-preview.3" \
+                -d "$payload")
+
+              work_item_id=$(jq -r '.id // empty' <<<"$response")
+              if [ -n "$work_item_id" ]; then
+                echo "Created Azure DevOps work item $work_item_id"
+              else
+                echo "Azure DevOps response did not include a work item id."
+                echo "$response"
+                exit 1
+              fi
             done <<<"$ITEMS"
 ---
 # GitHub Issue to Azure DevOps Work Item
