@@ -15,7 +15,7 @@ mcp-servers:
     entrypoint: npx
     entrypointArgs:
     - -y
-    - "@modelcontextprotocol/server-azure-devops"
+    - "github:microsoft/azure-devops-mcp"
     allowed:
     - "*"
 safe-outputs:
@@ -97,7 +97,7 @@ safe-outputs:
               response=$(curl -sS -f -u ":${AZDO_PAT}" \
                 -H "Content-Type: application/json-patch+json" \
                 -H "Accept: application/json" \
-                -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/${work_item_type_encoded}?api-version=7.1-preview.3" \
+                -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/\$${work_item_type_encoded}?api-version=7.1-preview.3" \
                 -d "$payload")
 
               work_item_id=$(jq -r '.id // empty' <<<"$response")

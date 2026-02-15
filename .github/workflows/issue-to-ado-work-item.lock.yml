@@ -23,7 +23,7 @@
 #
 # Create an Azure DevOps work item for each new GitHub issue.
 #
-# frontmatter-hash: 688340adf6fc973871aca470f8e283008418b2fd1b34fde746a75f866803e898
+# frontmatter-hash: dcfa56105f432d531dc2c59fce0a6009d81149dba90a51352395c6d7cd7b0964
 
 name: "GitHub Issue to Azure DevOps Work Item"
 "on":
@@ -92,9 +92,9 @@ jobs:
         run: |
           find "/opt/gh-aw/safe-jobs/" -type f -print
           echo "GH_AW_AGENT_OUTPUT=/opt/gh-aw/safe-jobs/agent_output.json" >> "$GITHUB_ENV"
+          echo "AZDO_PROJECT=GHIntegration" >> "$GITHUB_ENV"
           echo "AZDO_PAT=${{ secrets.AZDO_PAT }}" >> "$GITHUB_ENV"
           echo "AZDO_ORG=lfraile" >> "$GITHUB_ENV"
-          echo "AZDO_PROJECT=GHIntegration" >> "$GITHUB_ENV"
       - name: Create Azure DevOps work items
         run: |-
           set -euo pipefail
@@ -134,7 +134,7 @@ jobs:
             response=$(curl -sS -f -u ":${AZDO_PAT}" \
               -H "Content-Type: application/json-patch+json" \
               -H "Accept: application/json" \
-              -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/${work_item_type_encoded}?api-version=7.1-preview.3" \
+              -X POST "https://dev.azure.com/${AZDO_ORG}/${AZDO_PROJECT}/_apis/wit/workitems/\$${work_item_type_encoded}?api-version=7.1-preview.3" \
               -d "$payload")
 
             work_item_id=$(jq -r '.id // empty' <<<"$response")
@@ -509,7 +509,7 @@ jobs:
                 "entrypoint": "npx",
                 "entrypointArgs": [
                   "-y",
-                  "@modelcontextprotocol/server-azure-devops"
+                  "github:microsoft/azure-devops-mcp"
                 ],
                 "tools": [
                   "*"
