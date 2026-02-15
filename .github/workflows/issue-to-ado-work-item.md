@@ -10,13 +10,13 @@ permissions:
 roles: all
 mcp-servers:
   azure-devops:
-    registry: https://api.mcp.github.com/v0.1/servers/microsoft/azure-devops-mcp
     type: stdio
-    command: npx
-    args:
+    container: node:lts-alpine
+    entrypoint: npx
+    entrypointArgs:
     - -y
-    - "lfraileorg"
-    allowed:
+    - "@modelcontextprotocol/server-azure-devops"
+    tools:
     - "*"
 safe-outputs:
   jobs:
