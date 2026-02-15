@@ -504,14 +504,12 @@ jobs:
                 "container": "node:lts-alpine",
                 "entrypoint": "npx",
                 "entrypointArgs": [
-                  "npx",
                   "-y",
-                  "lfraileorg"
+                  "@modelcontextprotocol/server-azure-devops"
                 ],
                 "tools": [
                   "*"
-                ],
-                "registry": "https://api.mcp.github.com/v0.1/servers/microsoft/azure-devops-mcp"
+                ]
               },
               "github": {
                 "type": "stdio",
