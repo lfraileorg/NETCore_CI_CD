@@ -24,10 +24,12 @@ tools:
     lockdown: false
 
 safe-outputs:
+  mentions: false
+  allowed-github-references: []
   create-issue:
     title-prefix: "[repo-status] "
     labels: [report, daily-status]
-source: githubnext/agentics/workflows/daily-repo-status.md@69b5e3ae5fa7f35fa555b0a22aee14c36ab57ebb
+source: githubnext/agentics/workflows/daily-repo-status.md@442992eda2ccb11ee75a39c019ec6d38ae5a84a2
 ---
 
 # Daily Repo Status

@@ -3,11 +3,11 @@ description: Create an Azure DevOps work item for each new GitHub issue.
 "on":
   issues:
     types:
-    - opened
+    - opened  
+  roles: all
 permissions:
   actions: read
   contents: read
-roles: all
 mcp-servers:
   azure-devops:
     type: stdio
