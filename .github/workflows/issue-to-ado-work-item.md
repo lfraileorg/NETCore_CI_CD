@@ -44,15 +44,17 @@ You create a new Azure DevOps work item for every newly opened GitHub issue.
 
 Use these fields when calling `mcp_ado_wit_create_work_item`:
 
+Please use markdown formatting for the description field to include a link to the GitHub issue and other relevant information:
+
 - `project`: "GHIntegration"
 - `workItemType`: "User Story"
 - `fields`:
   - `System.Title`: "GitHub Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
-  - `System.Description`: HTML description with a concise summary plus a link to the GitHub issue. Include:
-    - Issue URL: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.issue.number }}
-    - Repository: ${{ github.repository }}
-    - Author: ${{ github.actor }}
-    - Full issue content: "${{ needs.activation.outputs.text }}"
+  - `System.Description`: Markdown description with a concise summary plus a link to the GitHub issue. Include:
+    - **Issue URL:** ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.issue.number }}
+    - **Repository:** ${{ github.repository }}
+    - **Author:** ${{ github.actor }}
+    - **Full issue content:** "${{  steps.sanitized.outputs.text }}"
 
 ## Security
 
