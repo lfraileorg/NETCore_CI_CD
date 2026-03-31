@@ -22,6 +22,7 @@ tools:
     # reading issues, pull requests and comments from 3rd-parties
     # If in a private repo this has no particular effect.
     lockdown: false
+    min-integrity: none # This workflow is allowed to examine and comment on any issues
 
 safe-outputs:
   mentions: false
@@ -29,7 +30,8 @@ safe-outputs:
   create-issue:
     title-prefix: "[repo-status] "
     labels: [report, daily-status]
-source: githubnext/agentics/workflows/daily-repo-status.md@442992eda2ccb11ee75a39c019ec6d38ae5a84a2
+    close-older-issues: true
+source: githubnext/agentics/workflows/daily-repo-status.md@1f672aef974f4246124860fc532f82fe8a93a57e
 ---
 
 # Daily Repo Status
